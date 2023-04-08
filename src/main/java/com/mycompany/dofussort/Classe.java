@@ -45,5 +45,10 @@ public class Classe {
     public ArrayList<Sort> getListeSort() {
         return listeSort;
     }
+
+    @Override
+    public String toString() {
+        return "Classe{" + "nom=" + nom + ", listeSort=" + listeSort + ", bonus=" + bonus + '}';
+    }
     
 }

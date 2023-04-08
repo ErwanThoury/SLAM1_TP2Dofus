@@ -13,7 +13,9 @@ import java.util.Scanner;
  */
 public class DofusSort {
     static Scanner s = new Scanner(System.in);
-    public static void main(String[] args) {                
+    public static void main(String[] args) { 
+        ArrayList<Classe> listeClasses = new ArrayList<Classe>();
+        ArrayList<Personnage> listePersonnages = new ArrayList<Personnage>();
         // Iop
         Classe iop = new Classe("Iop", "Dommages");
         
@@ -90,7 +92,11 @@ public class DofusSort {
         System.out.println("Depuis, l'harmonie est perturbée, éléments et monstres se déchaînent.");
         System.out.println("Le temps est venue ! Ta destinée te mène à Incarnam.");
         System.out.println("Découvre le monde, trouve de précieux alliés, retrouve les Dofus, deviens un héros et entre dans la légende !");
-
+        
+        listeClasses.add(iop);
+        listeClasses.add(feca);
+        listeClasses.add(eniripsa);
+        listeClasses.add(cra);
         String aff = "A quelle classe appartenez-vous ? (1-4)\n"
                 + "1 - Féca\n"
                 + "2 - Iop\n"
@@ -124,7 +130,7 @@ public class DofusSort {
                 + choixClasse.getNom() + ", l'aventure peut commencer !");
         
         Personnage personnageActuel = new Personnage(nomDuJoueur, choixClasse);
-        
+        listePersonnages.add(personnageActuel);
         int i = 0;
         while(i != 11)
         {
@@ -142,6 +148,27 @@ public class DofusSort {
                     + "11- Quitter\n");
             if(i == 1)
             {
+                int tailleClasse = listeClasses.size();
+                String affCaseUn = "Quelle classe voulez-vous choisir ? (1-"+tailleClasse+")\n";
+                int compteurClasse = 1;
+                for (Classe c : listeClasses)
+                {
+                    affCaseUn += compteurClasse + "- " + c.getNom() + "\n";
+                    compteurClasse += 1;
+                }   
+                int choixCaseUn = repet(tailleClasse, affCaseUn);
+                Classe choixClasseCaseUn = listeClasses.get(choixCaseUn - 1);
+                
+
+                System.out.println("Quel est votre nom disciple " + choixClasseCaseUn.getNom()
+                        + " ?");
+                String nomDuJoueurCaseUn = s.next();
+                System.out.println("Très bien " + nomDuJoueurCaseUn + ", disciple " 
+                        + choixClasseCaseUn.getNom() + ", personnage créé !");
+
+                Personnage personnageCaseUn = new Personnage(nomDuJoueurCaseUn, choixClasseCaseUn);
+                listePersonnages.add(personnageCaseUn);
+                System.out.println(personnageCaseUn);
                 /* 1- Créer un personnage (Facile, Moyen si optimisé) /2-3
                 Dans cette case, vous allez devoir créer un personnage. Cela consiste donc à demander à l'utilisateur
                 un nom. Il faudra aussi lui montrer la liste des classes disponibles pour qu'il puisse choisir la sienne.
@@ -149,13 +176,35 @@ public class DofusSort {
             }
             if(i == 2)
             {
+                System.out.println(personnageActuel);
+                int taillePersonnage = listePersonnages.size();
+                String affCaseDeux = "Quel personnage voulez-vous choisir ? (1-"+taillePersonnage+")\n";
+                int compteurPersonnage = 1;
+                for (Personnage p : listePersonnages)
+                {
+                    affCaseDeux += compteurPersonnage + "- " + p.getNom() + "\n";
+                    compteurPersonnage += 1;
+                }   
+                int choixCaseDeux = repet(taillePersonnage, affCaseDeux);
+                personnageActuel = listePersonnages.get(choixCaseDeux - 1);
+                System.out.println(personnageActuel);
                 /* 2- Changer de personnage actuel (Facile, Moyen si optimisé) /2-3
                 Dans cette case, vous allez devoir afficher la liste des personnages à l'utilisateur.
                 Celui-ci va pouvoir en sélectionner un pour qu'il soit le personnage actuel.
                 */
             }
             if(i == 3)
-            {
+            {   
+                int taillePersonnage = listePersonnages.size();
+                String affCaseTrois = "De quel personnage voulez-vous voir les sorts ? (1-"+taillePersonnage+")\n";
+                int compteurPersonnage = 1;
+                for (Personnage p : listePersonnages)
+                {
+                    affCaseTrois += compteurPersonnage + "- " + p.getNom() + "\n";
+                    compteurPersonnage += 1;
+                }   
+                int choixCaseTrois = repet(taillePersonnage, affCaseTrois);
+                System.out.println(listePersonnages.get(choixCaseTrois - 1).getClasse().getListeSort());
                 /* 3- Afficher la liste des sorts du personnage actuel (Facile, Moyen si optimisé) /2-3
                 Dans cette case, vous allez demander à l'utilisateur de quel personnage veut-il voir les sorts.
                 Vous afficherez la liste des personnages disponibles pour l'aider dans son choix.
@@ -163,24 +212,76 @@ public class DofusSort {
             }
             if(i == 4)
             {
+                String affCaseQuatre = "A quel niveau voulez-vous mettre le personnage actuel? (1 - 200)\n";
+                personnageActuel.setNiveau(repet(200,affCaseQuatre));
                 /* 4- Augmenter le niveau du personnage actuel (Facile) /2
                 Dans cette case, il faudra demander à l'utilisateur à quel niveau il veut mettre son personnage (nombre compris entre 1 et 200)
                 */
             }
             if(i == 5)
             {
+                String affCaseCinq = "Quelle caractéristique voulez-vous augmenter ?\n"
+                        +"1- Feu\n"
+                        +"2- Terre\n"
+                        +"3- Eau\n"
+                        +"4- Air\n";
+                int choixCaseCinq = repet(4, affCaseCinq);
+                String affCaseStatCinq = "De combien ? (1-1000)";
+                int choixStatCinq = repet(1000, affCaseStatCinq);
+                if (choixCaseCinq == 1){
+                    personnageActuel.setFeuStatistique(choixStatCinq);
+                }
+                if (choixCaseCinq == 2){
+                    personnageActuel.setTerreStatistique(choixStatCinq);
+                }
+                if (choixCaseCinq == 3){
+                    personnageActuel.setEauStatistique(choixStatCinq);
+                }
+                if (choixCaseCinq == 4){
+                    personnageActuel.setAirStatistique(choixStatCinq);
+                }
                 /* 5- Augmenter les caractéristiques d'un personnage actuel (Facile) /2
                 Dans cette case, il faudra demander à l'utilisateur quelle caractéristique il veut changer (eau, terre, feu, air) puis de combien il veut la changer.
                 */ 
             }
             if(i == 6)
             {
+                System.out.println(personnageActuel);
                 /* 6- Afficher la fiche personnage (Moyen) /3
                 Dans cette case, on voudra afficher toute les informations relatives au personnage actuel (Nom, Classe, Caractéristique, Niveau, Liste Sorts).
                 */
             }
             if(i == 7)
             {
+                int tailleClasse = listeClasses.size();
+                String affCaseSept = "Quelle classe voulez-vous choisir ? (1-"+tailleClasse+")\n";
+                int compteurClasse = 1;
+                for (Classe c : listeClasses)
+                {
+                    affCaseSept += compteurClasse + "- " + c.getNom() + "\n";
+                    compteurClasse += 1;
+                }   
+                int choixCaseSept = repet(tailleClasse, affCaseSept);
+                System.out.println("Nom ? \n");
+                String strNom = s.next();
+                String strAff = "Quelle caractéristique voulez-vous augmenter ?\n"
+                        +"1- Feu\n"
+                        +"2- Terre\n"
+                        +"3- Eau\n"
+                        +"4- Air\n";
+                int choixCaseElSept = repet(4, strAff);
+                String strElement = "Feu";
+                if (choixCaseElSept == 2){
+                    strElement = "Terre";
+                }
+                if (choixCaseElSept == 3){
+                    strElement = "Eau";
+                }
+                if (choixCaseElSept == 4){
+                    strElement = "Air";
+                }
+                Sort s = new Sort(strNom,repet(100,"Degat Max (1-100) :"),repet(50,"Degat Min (1-50) :"), repet(200,"Niveau (1-200) :"),strElement);
+                listeClasses.get(choixCaseSept - 1).addSort(s);
                 /* 7- Créer un sort et l'ajouter à une classe (Facile, Moyen si optimisé) /2-3
                 Dans cette case, on voudra créer un sort et l'ajouter à la liste des sorts d'un personnage.
                 */
@@ -199,6 +300,7 @@ public class DofusSort {
             }
             if(i == 10)
             {
+                System.out.println("test3");
                 /* 10- Afficher les sorts disponibles selon le niveau du personnage (Moyen, Difficile si optimisé) /3-5
                 Par exemple, on a un personnage ayant 250 en eau, il va pouvoir taper 280-290 avec son sort eau qui tape de base 30-40.
                 */

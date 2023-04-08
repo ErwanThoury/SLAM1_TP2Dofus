@@ -62,6 +62,11 @@ public class Sort {
     public void setElement(String element) {
         this.element = element;
     }
+
+    @Override
+    public String toString() {
+        return "Sort{" + "nom=" + nom + ", degatMax=" + degatMax + ", degatMin=" + degatMin + ", niveau=" + niveau + ", element=" + element + '}';
+    }
     
     
 }
